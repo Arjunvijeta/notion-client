@@ -3,6 +3,9 @@
 A robust, production-ready Python client for the Notion API with automatic retries, intelligent caching, and comprehensive error handling. Supports the latest Notion API version (2025-09-03) including data sources and advanced page management.
 
 ## Installation
+```bash
+pip install git+https://github.com/Arjunvijeta/notion-client.git
+```
 
 ### From Source (Development)
 
