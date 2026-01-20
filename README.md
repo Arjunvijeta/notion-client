@@ -817,8 +817,6 @@ Contributions are welcome! Please ensure:
 
 ## License
 
-This project is part of the JobAutomation workspace.
-
 ---
 
 **Version**: 1.0.0  
