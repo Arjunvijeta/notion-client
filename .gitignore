@@ -28,6 +28,11 @@ env/
 ENV/
 env.bak/
 venv.bak/
+.venv/
+
+# Poetry
+# Note: poetry.lock should be committed for applications
+# For libraries, you may want to add poetry.lock to .gitignore
 
 # IDEs
 .vscode/

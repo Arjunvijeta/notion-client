@@ -1,18 +1,18 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
-[project]
+[tool.poetry]
 name = "notion-client-wrapper"
 version = "1.0.0"
 description = "A robust, production-ready Python client for the Notion API with smart caching and comprehensive error handling"
 readme = "README.md"
-requires-python = ">=3.8"
-license = {text = "MIT"}
-authors = [
-    {name = "Arjun", email = "arjunvijeta@gmail.com"}
-]
+authors = ["Arjun <arjunvijeta@gmail.com>"]
+license = "MIT"
 keywords = ["notion", "api", "client", "wrapper", "productivity", "database"]
+homepage = "https://github.com/Arjunvijeta/notion-client"
+repository = "https://github.com/Arjunvijeta/notion-client"
+documentation = "https://github.com/Arjunvijeta/notion-client/blob/main/README.md"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -27,46 +27,34 @@ classifiers = [
     "Topic :: Office/Business",
     "Typing :: Typed",
 ]
+packages = [{include = "notion_client", from = "src"}]
+include = ["src/notion_client/py.typed"]
 
-dependencies = [
-    "requests>=2.31.0",
-    "urllib3>=2.0.0",
-    "cachetools>=5.3.0",
-]
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.31.0"
+urllib3 = "^2.0.0"
+cachetools = "^5.3.0"
 
-[project.optional-dependencies]
-dev = [
-    "pytest>=7.4.0",
-    "pytest-cov>=4.1.0",
-    "pytest-mock>=3.11.0",
-    "black>=23.0.0",
-    "mypy>=1.5.0",
-    "ruff>=0.1.0",
-    "types-requests>=2.31.0",
-]
-
-[project.urls]
-Homepage = "https://github.com/Arjunvijeta/notion-client"
-Repository = "https://github.com/Arjunvijeta/notion-client"
-Issues = "https://github.com/Arjunvijeta/notion-client/issues"
-Documentation = "https://github.com/Arjunvijeta/notion-client/blob/main/README.md"
-
-[tool.setuptools]
-packages = ["notion_client"]
-package-dir = {"" = "src"}
-
-[tool.setuptools.package-data]
-notion_client = ["py.typed", "*.md"]
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.11.0"
+black = "^23.0.0"
+mypy = "^1.5.0"
+ruff = "^0.1.0"
+types-requests = "^2.31.0"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = [
     "--verbose",
     "--strict-markers",
-    "--cov=src/notion_client",
+    "--cov=notion_client",
     "--cov-report=term-missing",
     "--cov-report=html",
     "--cov-report=xml",
@@ -78,7 +66,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["src/notion_client"]
+source = ["notion_client"]
 omit = [
     "*/tests/*",
     "*/__pycache__/*",
