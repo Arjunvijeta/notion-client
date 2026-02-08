@@ -1,18 +1,18 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry]
+[project]
 name = "notion-client-wrapper"
 version = "1.0.0"
 description = "A robust, production-ready Python client for the Notion API with smart caching and comprehensive error handling"
 readme = "README.md"
-authors = ["Arjun <arjunvijeta@gmail.com>"]
-license = "MIT"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Arjun", email = "arjunvijeta@gmail.com"}
+]
 keywords = ["notion", "api", "client", "wrapper", "productivity", "database"]
-homepage = "https://github.com/Arjunvijeta/notion-client"
-repository = "https://github.com/Arjunvijeta/notion-client"
-documentation = "https://github.com/Arjunvijeta/notion-client/blob/main/README.md"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -27,23 +27,31 @@ classifiers = [
     "Topic :: Office/Business",
     "Typing :: Typed",
 ]
-packages = [{include = "notion_client", from = "src"}]
-include = ["src/notion_client/py.typed"]
+dependencies = [
+    "requests>=2.31.0",
+    "urllib3>=2.0.0",
+    "cachetools>=5.3.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-requests = "^2.31.0"
-urllib3 = "^2.0.0"
-cachetools = "^5.3.0"
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-mock>=3.11.0",
+    "black>=23.0.0",
+    "mypy>=1.5.0",
+    "ruff>=0.1.0",
+    "types-requests>=2.31.0",
+    "types-cachetools>=5.3.0",
+]
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.4.0"
-pytest-cov = "^4.1.0"
-pytest-mock = "^3.11.0"
-black = "^23.0.0"
-mypy = "^1.5.0"
-ruff = "^0.1.0"
-types-requests = "^2.31.0"
+[project.urls]
+Homepage = "https://github.com/Arjunvijeta/notion-client"
+Repository = "https://github.com/Arjunvijeta/notion-client"
+Documentation = "https://github.com/Arjunvijeta/notion-client/blob/main/README.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/notion_client"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -106,6 +114,8 @@ extend-exclude = '''
 [tool.ruff]
 line-length = 100
 target-version = "py38"
+
+[tool.ruff.lint]
 select = [
     "E",  # pycodestyle errors
     "W",  # pycodestyle warnings
@@ -120,12 +130,12 @@ ignore = [
     "B008",  # do not perform function calls in argument defaults
 ]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]  # unused imports in __init__.py
 
 [tool.mypy]
-python_version = "3.8"
-warn_return_any = true
+python_version = "3.9"
+warn_return_any = false
 warn_unused_configs = true
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
@@ -135,7 +145,7 @@ warn_redundant_casts = true
 warn_unused_ignores = true
 warn_no_return = true
 strict_equality = true
-ignore_missing_imports = true
+ignore_missing_imports = false
 
 [[tool.mypy.overrides]]
 module = "notion_client.tests.*"

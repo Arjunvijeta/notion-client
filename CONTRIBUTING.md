@@ -27,7 +27,23 @@ Please be respectful and constructive in all interactions. We're all here to lea
    cd notion_client
    ```
 3. **Create a branch** for your changes:
+
+## Getting Started
+
+1. **Fork the repository** on GitHub
+2. **Clone your fork** locally:
    ```bash
+   git clone https://github.com/YOUR_USERNAME/notion-client.git
+   cd notion-client
+   ```
+3. **Add upstream remote:**
+   ```bash
+   git remote add upstream https://github.com/Arjunvijeta/notion-client.git
+   ```
+4. **Create a branch** from `develop`:
+   ```bash
+   git checkout develop
+   git pull upstream develop
    git checkout -b feature/your-feature-name
    ```
 
@@ -36,24 +52,37 @@ Please be respectful and constructive in all interactions. We're all here to lea
 ### Prerequisites
 
 - Python 3.8 or higher
-- pip
+- uv (Python package installer)
 
 ### Installation
 
-1. **Install the package in development mode:**
+1. **Install uv** (if not already installed):
 
    ```bash
-   pip install -e ".[dev]"
+   # On macOS/Linux
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+
+   # On Windows
+   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+   # Or with pip
+   pip install uv
    ```
 
-2. **Verify installation:**
+2. **Install the package in development mode:**
+
    ```bash
-   python -c "from notion_client import NotionClient; print('Success!')"
+   uv sync --extra dev
+   ```
+
+3. **Verify installation:**
+   ```bash
+   uv run python -c "from notion_client import NotionClient; print('Success!')"
    ```
 
 ### Development Dependencies
 
-The `dev` extras include:
+uv automatically installs all dependencies including:
 
 - `pytest` - Testing framework
 - `pytest-cov` - Coverage reporting
@@ -136,21 +165,21 @@ notion_client/
 
 ```bash
 # Run all tests
-pytest
+uv run pytest
 
 # Run with coverage
-pytest --cov=notion_client
+uv run pytest --cov=notion_client --cov-report=html
 
 # Run specific test file
-pytest notion_client/tests/test_client.py
+uv run pytest tests/test_client.py
 
 # Run specific test
-pytest notion_client/tests/test_client.py::TestNotionClient::test_init
+uv run pytest tests/test_client.py::TestNotionClient::test_init
 ```
 
 ### Writing Tests
 
-1. **Place tests in `notion_client/tests/`**
+1. **Place tests in `tests/` directory**
 2. **Name test files `test_*.py`**
 3. **Use fixtures from `conftest.py`**
 4. **Mock external API calls**
@@ -182,10 +211,10 @@ We use **Black** for code formatting:
 
 ```bash
 # Format code
-black notion_client/
+uv run black src/notion_client/
 
 # Check formatting
-black --check notion_client/
+uv run black --check src/notion_client/
 ```
 
 ### Linting
@@ -194,10 +223,10 @@ We use **Ruff** for linting:
 
 ```bash
 # Lint code
-ruff check notion_client/
+uv run ruff check src/notion_client/
 
 # Auto-fix issues
-ruff check --fix notion_client/
+uv run ruff check --fix src/notion_client/
 ```
 
 ### Type Checking
@@ -205,7 +234,22 @@ ruff check --fix notion_client/
 We use **MyPy** for type checking:
 
 ```bash
-mypy notion_client/ --exclude tests
+uv run mypy src/notion_client/ --exclude tests
+```
+
+### Pre-commit Hooks (Recommended)
+
+Install pre-commit hooks to automatically check your code:
+
+```bash
+# Install pre-commit
+pip install pre-commit
+
+# Install hooks
+pre-commit install
+
+# Run manually (optional)
+pre-commit run --all-files
 ```
 
 ### Pre-commit Checks
@@ -214,16 +258,16 @@ Before committing, run:
 
 ```bash
 # Format
-black notion_client/
+uv run black src/notion_client/ tests/
 
 # Lint
-ruff check --fix notion_client/
-
-# Test
-pytest
+uv run ruff check --fix src/notion_client/ tests/
 
 # Type check
-mypy notion_client/ --exclude tests
+uv run mypy src/notion_client/ --exclude tests
+
+# Test
+uv run pytest
 ```
 
 ## Submitting Changes
@@ -260,6 +304,13 @@ Fixes #42
    ## Description
 
    Brief description of changes
+
+   ## Type of Change
+
+   - [ ] Bug fix
+   - [ ] New feature
+   - [ ] Breaking change
+   - [ ] Documentation update
 
    ## Changes
 

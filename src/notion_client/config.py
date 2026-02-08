@@ -1,14 +1,15 @@
 import logging
 from dataclasses import dataclass, field
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Type
 
 try:
     from cachetools import TTLCache
 
     CACHETOOLS_AVAILABLE = True
+    TTLCacheType: Optional[Type] = TTLCache
 except ImportError:
     CACHETOOLS_AVAILABLE = False
-    TTLCache = None
+    TTLCacheType = None
 
 
 @dataclass

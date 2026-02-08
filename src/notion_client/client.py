@@ -51,7 +51,7 @@ try:
     CACHETOOLS_AVAILABLE = True
 except ImportError:
     CACHETOOLS_AVAILABLE = False
-    TTLCache = None
+    TTLCache = None  # type: ignore[assignment,misc]
 
 
 from .config import ClientConfig
@@ -263,20 +263,20 @@ class NotionClient:
     def _setup_cache(self) -> None:
         """Initialize caches if caching is enabled."""
         if self.config.enable_caching and CACHETOOLS_AVAILABLE:
-            self._page_cache = TTLCache(
+            self._page_cache: Any = TTLCache(
                 maxsize=self.config.cache_max_size, ttl=self.config.cache_ttl_pages
             )
-            self._blocks_cache = TTLCache(
+            self._blocks_cache: Any = TTLCache(
                 maxsize=self.config.cache_max_size, ttl=self.config.cache_ttl_blocks
             )
-            self._db_cache = TTLCache(
+            self._db_cache: Any = TTLCache(
                 maxsize=self.config.cache_max_size, ttl=self.config.cache_ttl_databases
             )
-            self._data_source_cache = TTLCache(
+            self._data_source_cache: Any = TTLCache(
                 maxsize=self.config.cache_max_size, ttl=self.config.cache_ttl_data_sources
             )
-            self._cache_lock = Lock()
-            self._cache_stats = {"hits": 0, "misses": 0, "invalidations": 0}
+            self._cache_lock: Any = Lock()
+            self._cache_stats: Any = {"hits": 0, "misses": 0, "invalidations": 0}
         else:
             self._page_cache = None
             self._blocks_cache = None
@@ -709,12 +709,12 @@ class NotionClient:
                 )
 
             if parent_type == "workspace":
-                payload["parent"] = {"type": "workspace", "workspace": True}
+                payload["parent"] = {"type": "workspace", "workspace": True}  # type: ignore[dict-item]
             else:
                 payload["parent"] = {"type": parent_type, parent_type: parent_id}
         else:
             # No parent_id provided - workspace-level page for public integrations
-            payload["parent"] = {"type": "workspace", "workspace": True}
+            payload["parent"] = {"type": "workspace", "workspace": True}  # type: ignore[dict-item]
 
         # Add properties
         if properties:
@@ -726,7 +726,7 @@ class NotionClient:
                 raise NotionValidationError(
                     "Cannot specify 'children' when using a template. The template overrides page content."
                 )
-            payload["children"] = children
+            payload["children"] = children  # type: ignore[assignment]
 
         if icon is not None:
             payload["icon"] = icon
@@ -855,7 +855,7 @@ class NotionClient:
         Returns:
             Updated database object
         """
-        payload = {}
+        payload: Dict[str, Any] = {}
         if title:
             payload["title"] = [{"text": {"content": title}}]
         if properties:
@@ -927,7 +927,7 @@ class NotionClient:
             }
             results = client.query_data_source(data_source_id, filter_obj=filter_obj)
         """
-        payload = {"page_size": min(page_size, 100)}
+        payload: Dict[str, Any] = {"page_size": min(page_size, 100)}
         if filter_obj:
             payload["filter"] = filter_obj
         if sorts:
@@ -1058,7 +1058,7 @@ class NotionClient:
             - When moving data sources between databases, views in the original database become linked views
         """
         # Build payload with only provided parameters
-        payload = {}
+        payload: Dict[str, Any] = {}
 
         if properties is not None:
             payload["properties"] = properties
@@ -1200,7 +1200,7 @@ class NotionClient:
         Returns:
             Search results with 'results' list
         """
-        payload = {"page_size": min(page_size, 100)}
+        payload: Dict[str, Any] = {"page_size": min(page_size, 100)}
         if query:
             payload["query"] = query
         if filter_type:
